@@ -4,7 +4,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var todos = require('./routes/todos');
+var weibo = require('./routes/weibo');
 var cloud = require('./cloud');
 
 var app = express();
@@ -22,7 +22,9 @@ app.use(cloud);
 // app.use(AV.Cloud);
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 app.use(cookieParser());
 
 // 未处理异常捕获 middleware
@@ -36,8 +38,9 @@ app.use(function(req, res, next) {
   d.add(req);
   d.add(res);
   d.on('error', function(err) {
-    console.error('uncaughtException url=%s, msg=%s', req.url, err.stack || err.message || err);
-    if(!res.finished) {
+    console.error('uncaughtException url=%s, msg=%s', req.url, err.stack ||
+      err.message || err);
+    if (!res.finished) {
       res.statusCode = 500;
       res.setHeader('content-type', 'application/json; charset=UTF-8');
       res.end('uncaughtException');
@@ -47,7 +50,9 @@ app.use(function(req, res, next) {
 });
 
 app.get('/', function(req, res) {
-  res.render('index', { currentTime: new Date() });
+  res.render('index', {
+    currentTime: new Date()
+  });
 });
 
 // 可以将一类的路由单独保存在一个文件中
@@ -61,13 +66,15 @@ app.use(function(req, res, next) {
   next(err);
 });
 
+// 可以将一类的路由单独保存在一个文件中
+app.use('/weibo', weibo);
 // error handlers
 
 // 如果是开发环境，则将异常堆栈输出到页面，方便开发调试
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) { // jshint ignore:line
     var statusCode = err.status || 500;
-    if(statusCode === 500) {
+    if (statusCode === 500) {
       console.error(err.stack || err);
     }
     res.status(statusCode);
