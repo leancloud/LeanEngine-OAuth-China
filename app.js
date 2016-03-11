@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var weibo = require('./routes/weibo');
 var cloud = require('./cloud');
+var passport = require('passport');
 
 var app = express();
 
@@ -26,6 +27,9 @@ app.use(bodyParser.urlencoded({
   extended: false
 }));
 app.use(cookieParser());
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 // 未处理异常捕获 middleware
 app.use(function(req, res, next) {
@@ -56,7 +60,7 @@ app.get('/', function(req, res) {
 });
 
 // 可以将一类的路由单独保存在一个文件中
-app.use('/todos', todos);
+app.use('/weibo', weibo);
 
 // 如果任何路由都没匹配到，则认为 404
 // 生成一个异常让后面的 err handler 捕获

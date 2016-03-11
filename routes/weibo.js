@@ -3,8 +3,8 @@ var router = require('express').Router(),
   WeiboStrategy = require('passport-weibo').Strategy,
   request = require('request');
 
-var WEIBO_CLIENT_ID = "在这里填写微博应用的 App ID";
-var WEIBO_CLIENT_SECRET = "在这里填写微博应用的 App Secret";
+var WEIBO_CLIENT_ID = "3101401663";
+var WEIBO_CLIENT_SECRET = "92f86728de2ed33ac45f03700ed7500b";
 
 var ACCESSTOKEN = "";
 
@@ -58,7 +58,7 @@ router.get('/auth/callback',
 router.get('/share',
   function(req, res) {
     // 跳转到这里之后，我们让用户跳转到发送微博的页面
-    res.render('post', {});
+    res.render('post', {}); //此处只是为了展现 post.ejs 页面
   });
 
 // 这里调用了微博发送的接口，发送一条全新的微博
